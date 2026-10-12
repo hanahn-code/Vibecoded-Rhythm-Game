@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090a14" />
+  <title>Pulsegrid — Your music. Your chart.</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" id="brandHome" href="#" aria-label="Return to song dashboard">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>PULSE<span>GRID</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="icon-btn" id="helpBtn" aria-label="How to play">?</button>
+        <button class="icon-btn" id="soundBtn" aria-label="Toggle sound">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm12.5 3a4.5 4.5 0 0 0-2-3.74v7.48A4.5 4.5 0 0 0 17.5 12Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="homeView">
+        <div class="eyebrow"><span></span> AUDIO-REACTIVE RHYTHM ENGINE</div>
+        <h1>YOUR MUSIC.<br><em>YOUR CHART.</em></h1>
+        <p class="hero-copy">Drop in any song. Pulsegrid finds the beat, builds a chart, and turns it into a stage.</p>
+
+        <div class="upload-card" id="dropZone">
+          <input type="file" id="fileInput" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac,.flac" hidden />
+          <div class="upload-art" aria-hidden="true">
+            <div class="disc"><span></span></div>
+            <div class="wave-bars"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="upload-copy">
+            <small>START A NEW SET</small>
+            <h2>Import your track</h2>
+            <p>Drag & drop an audio file, or choose one from your device.</p>
+            <button class="primary-btn" id="chooseBtn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v5h14v-5"/></svg>
+              Choose audio
+            </button>
+            <span class="file-types">MP3 · WAV · OGG · M4A · FLAC</span>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <article><span class="feature-number">01</span><div><strong>LOCAL ANALYSIS</strong><p>Your audio never leaves this device.</p></div></article>
+          <article><span class="feature-number">02</span><div><strong>SMART CHARTING</strong><p>Onset-aware patterns tuned to the beat.</p></div></article>
+          <article><span class="feature-number">03</span><div><strong>INSTANT PLAY</strong><p>Five lanes. Keyboard or touch.</p></div></article>
+        </div>
+      </section>
+
+      <section class="analyze-view hidden" id="analyzeView" aria-live="polite">
+        <div class="analysis-stage">
+          <div class="analysis-visual">
+            <div class="scan-ring"><div class="scan-core"><span>♪</span></div></div>
+            <div class="orbit-dot one"></div><div class="orbit-dot two"></div>
+          </div>
+          <div class="analysis-copy">
+            <span class="status-pill"><i></i> ANALYZING AUDIO</span>
+            <h2 id="analysisTitle">Finding the pulse…</h2>
+            <p id="analysisDetail">Mapping transients and rhythmic energy</p>
+            <div class="progress-track"><span id="analysisProgress"></span></div>
+            <div class="progress-labels"><span id="analysisStep">Decoding track</span><b id="analysisPercent">0%</b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="setup-view hidden" id="setupView">
+        <div class="track-heading">
+          <button class="back-btn" id="newTrackBtn" aria-label="Import another track">←</button>
+          <div class="track-cover"><div class="mini-disc"></div></div>
+          <div class="track-meta"><small>READY TO CHART</small><h2 id="trackName">Untitled track</h2><p id="trackInfo">--:-- · Audio</p></div>
+          <div class="bpm-badge"><small>DETECTED</small><strong id="bpmValue">120</strong><span>BPM</span></div>
+        </div>
+
+        <div class="setup-grid">
+          <div class="panel chart-panel">
+            <div class="panel-title"><span>CHART SETTINGS</span><i>AUTO-GENERATED</i></div>
+            <label>Difficulty</label>
+            <div class="difficulty-tabs" id="difficultyTabs">
+              <button data-level="easy"><span>Easy</span><small>Relaxed</small></button>
+              <button class="active" data-level="normal"><span>Normal</span><small>Balanced</small></button>
+              <button data-level="hard"><span>Hard</span><small>Intense</small></button>
+              <button data-level="expert"><span>Expert</span><small>Chaos</small></button>
+            </div>
+            <div class="slider-line"><label for="offsetRange">Timing offset <small id="offsetLabel">0 ms</small></label><input id="offsetRange" type="range" min="-200" max="200" step="10" value="0"></div>
+            <label class="fail-toggle" for="failOnZero">
+              <span><strong>Life failure</strong><small>End the run instantly when life reaches zero.</small></span>
+              <input id="failOnZero" type="checkbox" role="switch" />
+              <i aria-hidden="true"></i>
+            </label>
+            <div class="chart-stats">
+              <div><small>NOTES</small><strong id="noteCount">—</strong></div>
+              <div><small>DENSITY</small><strong id="densityValue">—</strong></div>
+              <div><small>LENGTH</small><strong id="lengthValue">—</strong></div>
+            </div>
+          </div>
+
+          <div class="panel controls-panel">
+            <div class="panel-title"><span>CONTROLS</span></div>
+            <div class="key-row"><kbd>D</kbd><kbd>F</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></div>
+            <p>Hit notes as they cross the judgement line.</p>
+            <div class="speed-control"><span>NOTE SPEED</span><button id="speedDown">−</button><strong id="speedValue">7.0</strong><button id="speedUp">+</button></div>
+          </div>
+        </div>
+        <button class="play-btn" id="playBtn"><span>▶</span><div><small>ALL SET</small>PLAY TRACK</div><b>ENTER</b></button>
+        <p class="privacy-note">⚡ Audio analysis happens entirely in your browser.</p>
+      </section>
+
+      <section class="game-view hidden" id="gameView">
+        <div class="game-hud">
+          <button class="pause-btn" id="pauseBtn" aria-label="Pause">Ⅱ</button>
+          <div class="hud-track"><small>NOW PLAYING</small><strong id="hudTitle">Track</strong></div>
+          <div class="life"><span>LIVE</span><div><i id="lifeFill"></i></div></div>
+          <div class="score-box"><small>SCORE</small><strong id="scoreValue">0000000</strong></div>
+        </div>
+        <div class="game-stage" id="gameStage">
+          <canvas id="gameCanvas"></canvas>
+          <div class="combo-display" id="comboDisplay"><strong>0</strong><span>COMBO</span></div>
+          <div class="judgement" id="judgement">PERFECT</div>
+          <div class="countdown" id="countdown">3</div>
+          <div class="lane-keys" id="laneKeys"><kbd>D</kbd><kbd>F</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></div>
+        </div>
+        <div class="timebar"><span id="gameCurrent">0:00</span><div><i id="songProgress"></i></div><span id="gameDuration">0:00</span></div>
+      </section>
+
+      <section class="results-view hidden" id="resultsView">
+        <div class="results-card">
+          <span class="status-pill complete" id="resultStatus">SET COMPLETE</span>
+          <div class="grade" id="gradeValue">S</div>
+          <h2 id="resultTitle">Track complete</h2>
+          <p id="resultSubtitle">A new personal best.</p>
+          <div class="result-score"><small>FINAL SCORE</small><strong id="finalScore">0000000</strong></div>
+          <div class="result-grid">
+            <div class="perfect"><span>PERFECT</span><strong id="perfectCount">0</strong></div>
+            <div class="great"><span>GREAT</span><strong id="greatCount">0</strong></div>
+            <div class="good"><span>GOOD</span><strong id="goodCount">0</strong></div>
+            <div class="miss"><span>MISS</span><strong id="missCount">0</strong></div>
+            <div><span>MAX COMBO</span><strong id="maxCombo">0</strong></div>
+            <div><span>ACCURACY</span><strong id="accuracyValue">0%</strong></div>
+          </div>
+          <div class="result-actions"><button class="secondary-btn" id="backSetupBtn">CHANGE SETTINGS</button><button class="primary-btn" id="retryBtn">↻ PLAY AGAIN</button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal-card"><button class="modal-close" id="closeHelp">×</button><small>QUICK START</small><h2 id="helpTitle">How to play</h2><ol><li>Import any audio file from your device.</li><li>Choose a difficulty after BPM analysis.</li><li>Use <b>D F J K L</b> or tap the lanes when notes meet the line.</li></ol><p>For best timing, use headphones and keep this tab active.</p></div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
